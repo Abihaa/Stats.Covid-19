@@ -1,5 +1,5 @@
 from datetime import datetime
-import requests
+import requests,os
 from flask import Flask, jsonify, make_response
 from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
@@ -9,8 +9,10 @@ from marshmallow_sqlalchemy import ModelSchema
 # init app
 app = Flask(__name__)
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://Covid_User:cisco19@192.168.1.12:3306/Covid19_Stats'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'Covid19_Stats')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -242,5 +244,5 @@ def mapoutput():
 
 # Run server
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",debug=True)
 
